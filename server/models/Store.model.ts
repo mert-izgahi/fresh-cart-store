@@ -1,7 +1,8 @@
 import mongoose, { Document } from "mongoose";
-
-export interface Store extends Document {
+import slugify from "slugify";
+export interface IStore extends Document {
     name: string;
+    slug: string;
     address: string;
     description: string;
     logo: string;
@@ -15,6 +16,7 @@ export interface Store extends Document {
 
 const storeSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    slug: { type: String, required: true },
     address: { type: String, required: true },
     description: { type: String, required: true },
     logo: { type: String, required: true },
@@ -31,6 +33,19 @@ const storeSchema = new mongoose.Schema({
         },
         address: { type: String, required: true },
     },
+});
+
+storeSchema.pre("save", function (next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
+});
+
+storeSchema.set("toJSON", {
+    virtuals: true,
+});
+
+storeSchema.set("toObject", {
+    virtuals: true,
 });
 
 storeSchema.index({ location: "2dsphere" });
