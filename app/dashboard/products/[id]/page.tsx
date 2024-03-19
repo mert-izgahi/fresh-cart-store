@@ -3,7 +3,14 @@ import PageHeader from "@/components/shared/PageHeader";
 import { Container } from "@mantine/core";
 import React from "react";
 
-function CreateProductPage() {
+interface Props {
+    params: {
+        id: string;
+    };
+}
+
+function EditProductPage({ params }: Props) {
+    const id = params.id;
     return (
         <Container size={"xl"}>
             <PageHeader
@@ -12,9 +19,9 @@ function CreateProductPage() {
                 withBackButton
             />
 
-            <ProductForm mode="create" />
+            <ProductForm mode="edit" productId={id} />
         </Container>
     );
 }
 
-export default CreateProductPage;
+export default EditProductPage;

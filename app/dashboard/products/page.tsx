@@ -1,25 +1,25 @@
 import SearchForm from "@/components/forms/SearchForm";
-import StoresTable from "@/components/tables/StoresTable";
 import PageHeader from "@/components/shared/PageHeader";
+import ProductsTable from "@/components/tables/ProductsTable";
 import { Container, Stack } from "@mantine/core";
 import React from "react";
 
-function StoresPage() {
+function ProductsPage() {
     return (
         <Container size={"xl"}>
             <PageHeader
-                title="Stores"
-                subtitle="Manage your Stores"
-                createButtonLabel="Add New Category"
+                title="Products"
+                subtitle="Manage your Products"
+                createButtonLabel="Add New Product"
                 withCreateButton
-                createButtonUrl="/dashboard/Stores/create"
+                createButtonUrl="/dashboard/products/create"
             />
             <Stack>
-                <SearchForm inputPlaceholder="Search Stores" />
-                <StoresTable />
+                <SearchForm inputPlaceholder="Search Products" />
+                <ProductsTable />
             </Stack>
         </Container>
     );
 }
 
-export default StoresPage;
+export default ProductsPage;

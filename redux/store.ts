@@ -2,16 +2,19 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { categoriesApi } from "./categories/api";
 import { storesApi } from "./stores/api";
+import { productsApi } from "./products/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 const store = configureStore({
     reducer: {
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [storesApi.reducerPath]: storesApi.reducer,
+        [productsApi.reducerPath]: productsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(categoriesApi.middleware)
-            .concat(storesApi.middleware),
+            .concat(storesApi.middleware)
+            .concat(productsApi.middleware),
     devTools: true,
 });
 
