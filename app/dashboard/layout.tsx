@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/shared/Logo";
 import {
     AppShell,
     AppShellHeader,
@@ -90,15 +91,7 @@ function layout({ children }: { children: React.ReactNode }) {
                         opened={opened}
                         onClick={toggle}
                     />
-                    <Text
-                        component={Link}
-                        href={"/dashboard"}
-                        fw={"bolder"}
-                        size="xl"
-                        c={"green"}
-                    >
-                        Fresh Cart
-                    </Text>
+                    <Logo />
 
                     <Flex flex={1} justify="flex-end">
                         <Avatar radius="xl" src="https://i.pravatar.cc/300" />

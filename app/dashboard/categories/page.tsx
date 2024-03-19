@@ -1,4 +1,4 @@
-import SearchForm from "@/components/forms/SearchForm";
+import DashboardSearchForm from "@/components/forms/DashboardSearchForm";
 import CategoriesTable from "@/components/tables/CategoriesTable";
 import PageHeader from "@/components/shared/PageHeader";
 import {
@@ -24,7 +24,7 @@ function CategoriesPage() {
                 createButtonUrl="/dashboard/categories/create"
             />
             <Stack>
-                <SearchForm
+                <DashboardSearchForm
                     searchModel="categories"
                     inputPlaceholder="Search Categories"
                 />

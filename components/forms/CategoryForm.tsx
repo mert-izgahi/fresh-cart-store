@@ -48,7 +48,7 @@ function CategoryForm({ mode, categoryId }: Props) {
         useUpdateCategoryMutation();
 
     const { data: category, isLoading: isLoadingCategory } =
-        useGetCategoryQuery({ id: categoryId! });
+        useGetCategoryQuery({ id: categoryId! }, { skip: !categoryId });
 
     const { data: categories, isLoading } = useGetCategoriesQuery({});
     const categoriesOptions = useMemo(() => {

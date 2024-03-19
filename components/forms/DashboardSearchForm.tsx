@@ -7,7 +7,7 @@ interface Props {
     inputPlaceholder: string;
     searchModel: "categories" | "stores" | "products";
 }
-function SearchForm({ inputPlaceholder, searchModel }: Props) {
+function DashboardSearchForm({ inputPlaceholder, searchModel }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -57,4 +57,4 @@ function SearchForm({ inputPlaceholder, searchModel }: Props) {
     );
 }
 
-export default SearchForm;
+export default DashboardSearchForm;

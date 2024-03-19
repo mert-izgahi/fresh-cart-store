@@ -1,4 +1,4 @@
-import SearchForm from "@/components/forms/SearchForm";
+import DashboardSearchForm from "@/components/forms/DashboardSearchForm";
 import StoresTable from "@/components/tables/StoresTable";
 import PageHeader from "@/components/shared/PageHeader";
 import { Container, Stack } from "@mantine/core";
@@ -15,7 +15,7 @@ function StoresPage() {
                 createButtonUrl="/dashboard/stores/create"
             />
             <Stack>
-                <SearchForm
+                <DashboardSearchForm
                     inputPlaceholder="Search Stores"
                     searchModel="stores"
                 />
