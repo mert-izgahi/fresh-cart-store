@@ -5,7 +5,9 @@ import React from "react";
 function HomePage() {
     return (
         <Container size="xl" py="xl">
-            <Text>Popular Products</Text>
+            <Text size="xl" mb="xl">
+                Popular Products
+            </Text>
 
             <ProductsList />
         </Container>
