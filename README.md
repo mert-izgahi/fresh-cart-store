@@ -12,3 +12,5 @@
 -   Build layout UI for dashboard using Mantine
 -   Build Mongoose Models
 -   Build REST API
+-   Categories Page
+-   Create Category Page

@@ -1,8 +1,21 @@
 "use client";
 
-import { useGetCategoriesQuery } from "@/redux/categories/api";
+import {
+    useDeleteCategoryMutation,
+    useGetCategoriesQuery,
+} from "@/redux/categories/api";
 import { ICategory } from "@/server/models/Category.model";
-import { ActionIcon, Badge, Menu, MenuTarget } from "@mantine/core";
+import {
+    ActionIcon,
+    Badge,
+    Button,
+    Flex,
+    Image,
+    Menu,
+    MenuTarget,
+    Modal,
+    Text,
+} from "@mantine/core";
 import { DataTable, DataTableColumn } from "mantine-datatable";
 import {
     IoPencilOutline,
@@ -11,6 +24,63 @@ import {
 } from "react-icons/io5";
 import React from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
+
+function EditCategoryButton({ categoryId }: { categoryId: string }) {
+    const router = useRouter();
+    return (
+        <Button
+            leftSection={<IoPencilOutline />}
+            size="xs"
+            variant="outline"
+            onClick={() => {
+                router.push(`/dashboard/categories/${categoryId}`);
+            }}
+        >
+            Edit
+        </Button>
+    );
+}
+
+function DeleteCategoryButton({ categoryId }: { categoryId: string }) {
+    const [opened, { open, close }] = useDisclosure(false);
+    const [deleteCategory, { isLoading: deleteLoading }] =
+        useDeleteCategoryMutation();
+
+    return (
+        <>
+            <Button
+                leftSection={<IoTrashOutline />}
+                color="red"
+                size="xs"
+                variant="outline"
+                onClick={() => open()}
+            >
+                Delete
+            </Button>
+
+            <Modal opened={opened} onClose={close} title="Delete category">
+                <Text>Are you sure you want to delete this category?</Text>
+                <Flex justify="flex-end" mt="md" align="center" gap="md">
+                    <Button onClick={close} color="gray" variant="outline">
+                        Cancel
+                    </Button>
+                    <Button
+                        color="red"
+                        onClick={async () => {
+                            await deleteCategory({ id: categoryId }).unwrap();
+                            close();
+                        }}
+                        loading={deleteLoading}
+                    >
+                        Delete
+                    </Button>
+                </Flex>
+            </Modal>
+        </>
+    );
+}
 
 function CategoriesTable() {
     const searchParams = useSearchParams();
@@ -18,6 +88,7 @@ function CategoriesTable() {
     const { data, isLoading } = useGetCategoriesQuery({
         params: searchParams.toString(),
     });
+
     const columns: DataTableColumn<ICategory>[] = [
         {
             accessor: "_id",
@@ -25,9 +96,26 @@ function CategoriesTable() {
             width: 260,
         },
         {
+            accessor: "image",
+            title: "Icon",
+            textAlign: "center",
+            render: (row: ICategory) => {
+                return (
+                    <Image
+                        src={row.image}
+                        width={40}
+                        height={40}
+                        alt={"icon"}
+                        fit="contain"
+                    />
+                );
+            },
+        },
+        {
             accessor: "name",
             title: "Name",
         },
+
         {
             accessor: "status",
             title: "Status",
@@ -52,36 +140,10 @@ function CategoriesTable() {
             textAlign: "right",
             render: (row: ICategory) => {
                 return (
-                    <Menu
-                        position="bottom-end"
-                        withArrow
-                        arrowPosition="center"
-                        width={120}
-                    >
-                        <MenuTarget>
-                            <ActionIcon variant="light">
-                                <IoEllipsisVertical />
-                            </ActionIcon>
-                        </MenuTarget>
-
-                        <Menu.Dropdown>
-                            <Menu.Item
-                                leftSection={<IoPencilOutline />}
-                                onClick={() => {
-                                    console.log(row);
-                                }}
-                            >
-                                Edit
-                            </Menu.Item>
-
-                            <Menu.Item
-                                leftSection={<IoTrashOutline />}
-                                color="red"
-                            >
-                                Delete
-                            </Menu.Item>
-                        </Menu.Dropdown>
-                    </Menu>
+                    <Flex align="center" justify="flex-end" gap="md">
+                        <EditCategoryButton categoryId={row._id} />
+                        <DeleteCategoryButton categoryId={row._id} />
+                    </Flex>
                 );
             },
         },
@@ -100,6 +162,8 @@ function CategoriesTable() {
             shadow="none"
             columns={columns}
             records={data}
+            noRecordsText="No categories found"
+            mih={data ? "auto" : 400}
         />
     );
 }

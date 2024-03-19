@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { MantineProvider } from "@mantine/core";
 import theme from "@/theme";
 import { Provider } from "react-redux";
+import { Notifications } from "@mantine/notifications";
+
 import store from "@/redux/store";
 
 function Providers({ children }: { children: React.ReactNode }) {
@@ -20,6 +22,7 @@ function Providers({ children }: { children: React.ReactNode }) {
     return (
         <Provider store={store}>
             <MantineProvider theme={theme} defaultColorScheme="light">
+                <Notifications />
                 {children}
             </MantineProvider>
         </Provider>

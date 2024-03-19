@@ -3,18 +3,25 @@ import PageHeader from "@/components/ui/PageHeader";
 import { Container } from "@mantine/core";
 import React from "react";
 
-function CreateCategoryPage() {
+interface Props {
+    params: {
+        id: string;
+    };
+}
+
+function EditCategoryPage({ params }: Props) {
+    const id = params.id;
     return (
         <Container size={"xl"}>
             <PageHeader
                 title="Categories"
-                subtitle="Create a new category"
+                subtitle="Update a category"
                 withBackButton
             />
 
-            <CategoryForm mode="create" />
+            <CategoryForm mode="edit" categoryId={id} />
         </Container>
     );
 }
 
-export default CreateCategoryPage;
+export default EditCategoryPage;
