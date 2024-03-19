@@ -37,10 +37,7 @@ function StoreCard({ storeId }: Props) {
                 </Stack>
             </CardSection>
             <CardSection p="md">
-                <Stack>
-                    <Text>{store?.description}</Text>
-                    <Button variant="subtle">View Store</Button>
-                </Stack>
+                <Text>{store?.description}</Text>
             </CardSection>
         </Card>
     );

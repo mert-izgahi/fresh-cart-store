@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+import { cartSlice } from "./cart/slice";
 import { categoriesApi } from "./categories/api";
 import { storesApi } from "./stores/api";
 import { productsApi } from "./products/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 const store = configureStore({
     reducer: {
+        cart: cartSlice.reducer,
         [categoriesApi.reducerPath]: categoriesApi.reducer,
         [storesApi.reducerPath]: storesApi.reducer,
         [productsApi.reducerPath]: productsApi.reducer,

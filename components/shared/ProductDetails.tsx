@@ -18,6 +18,7 @@ import { IoAddOutline } from "react-icons/io5";
 import React from "react";
 import StoreCard from "./StoreCard";
 import CartItemsList from "./CartItemsList";
+import AddProductToCartButton from "../buttons/AddProductToCartButton";
 
 interface Props {
     productId: string;
@@ -78,20 +79,31 @@ function ProductDetails({ productId }: Props) {
                     </Flex>
                     <Title order={2}>{product?.name}</Title>
                     <Text>{product?.description}</Text>
-                    <Flex align="center" gap="md" justify="space-between">
+                    <Flex
+                        align="center"
+                        gap="md"
+                        justify="space-between"
+                        mt="xl"
+                        mb="xl"
+                    >
                         <Text size="xl" fw="bolder" c="green.6">
                             ${product?.price}
                         </Text>
-                        <Button leftSection={<IoAddOutline />}>
-                            Add to cart
-                        </Button>
+                        <AddProductToCartButton
+                            label="Add to cart"
+                            productId={product?._id}
+                            name={product?.name}
+                            price={product?.price}
+                            image={product?.images[0]}
+                            quantity={1}
+                        />
                     </Flex>
+                    <StoreCard storeId={product?.store?._id} />
                 </Stack>
             </GridCol>
             <GridCol span={{ base: 12, md: 4 }}>
                 <Stack>
                     <CartItemsList />
-                    <StoreCard storeId={product?.store?._id} />
                 </Stack>
             </GridCol>
         </Grid>
