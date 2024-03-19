@@ -12,8 +12,8 @@ function AddressInput({
     form,
 }: {
     label: string;
-    placeholder: string;
-    withAsterisk: boolean;
+    placeholder?: string;
+    withAsterisk?: boolean;
     form: UseFormReturnType<storeInput>;
 }) {
     const [isLoading, setIsLoading] = useState(false);

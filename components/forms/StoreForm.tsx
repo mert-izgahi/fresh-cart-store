@@ -163,8 +163,60 @@ function StoreForm({ mode, storeId }: Props) {
             autoClose: false,
             disallowClose: true,
         });
+        let logoUrl;
+        let coverUrl;
+        if (logoBlob) {
+            await startUpload([logoBlob] as File[]).then((urls) => {
+                if (urls && urls.length > 0) {
+                    logoUrl = urls[0].url;
+                }
+            });
+        }
 
-        console.log("Update Store", args);
+        if (coverBlob) {
+            await startUpload([coverBlob] as File[]).then((urls) => {
+                if (urls && urls.length > 0) {
+                    coverUrl = urls[0].url;
+                }
+            });
+        }
+        let newStoreData = {
+            ...args,
+        };
+        if (logoUrl) {
+            newStoreData.logo = logoUrl;
+        }
+        if (coverUrl) {
+            newStoreData.cover = coverUrl;
+        }
+        await updateStore({
+            id: storeId!,
+            data: {
+                ...newStoreData,
+            },
+        })
+            .then(() => {
+                notifications.update({
+                    id,
+                    color: "green",
+                    loading: false,
+                    autoClose: 2000,
+                    title: "Success",
+                    message: "Category updated successfully",
+                    icon: <IoCheckmarkCircle size={16} />,
+                });
+            })
+            .catch((error) => {
+                notifications.update({
+                    id,
+                    color: "red",
+                    title: "Error",
+                    loading: false,
+                    autoClose: 2000,
+                    message: error.data.message,
+                    icon: <IoAlertCircle size={16} />,
+                });
+            });
     };
 
     const onSubmit = async (values: storeInput) => {
@@ -182,7 +234,6 @@ function StoreForm({ mode, storeId }: Props) {
     }, [store]);
     return (
         <FormContainer>
-            <pre>{JSON.stringify(form.values, null, 2)}</pre>
             <form
                 onSubmit={form.onSubmit(onSubmit)}
                 autoComplete="off"
@@ -210,7 +261,12 @@ function StoreForm({ mode, storeId }: Props) {
                         value={slugify(form.values.name, { lower: true })}
                     />
 
-                    <AddressInput label="Location" form={form} />
+                    <AddressInput
+                        label="Address"
+                        placeholder="Address"
+                        withAsterisk
+                        form={form}
+                    />
 
                     <Textarea
                         label="Description"
@@ -256,7 +312,7 @@ function StoreForm({ mode, storeId }: Props) {
                         type="submit"
                         style={{ alignSelf: "flex-end" }}
                     >
-                        Create Store
+                        {mode === "create" ? "Create Store" : "Update Store"}
                     </Button>
                 </Stack>
             </form>
