@@ -9,6 +9,7 @@ export const GET = asyncWrapper(async () => {
 
 export const POST = asyncWrapper(async (req: NextRequest) => {
     const body = await req.json();
+
     const store = await createStore(body);
     return NextResponse.json(store, { status: 200 });
 });

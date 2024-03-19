@@ -6,16 +6,12 @@ import {
     AppShellMain,
     AppShellNavbar,
     Avatar,
-    Box,
     Burger,
-    Button,
     Flex,
     Group,
     NavLink,
-    Space,
     Stack,
     Text,
-    Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -23,14 +19,13 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import {
     IoHomeOutline,
-    IoCartOutline,
     IoSettingsOutline,
-    IoLogOut,
     IoStorefrontOutline,
     IoPeopleOutline,
     IoPricetagsOutline,
     IoBagOutline,
     IoListOutline,
+    IoFastFoodOutline,
 } from "react-icons/io5";
 function layout({ children }: { children: React.ReactNode }) {
     const [opened, { toggle }] = useDisclosure(false);
@@ -42,9 +37,14 @@ function layout({ children }: { children: React.ReactNode }) {
             icon: IoHomeOutline,
         },
         {
+            label: "Stores",
+            link: "/dashboard/stores",
+            icon: IoStorefrontOutline,
+        },
+        {
             label: "Products",
             link: "/dashboard/products",
-            icon: IoStorefrontOutline,
+            icon: IoFastFoodOutline,
         },
         {
             label: "Categories",

@@ -15,7 +15,21 @@ export const getStore = async (id: string) => {
 
 export const createStore = async (store: IStore) => {
     await connectDb();
-    const newStore = new Store(store);
+    console.log(store);
+
+    const newStore = new Store({
+        name: store.name,
+        slug: store.slug,
+        description: store.description,
+        logo: store.logo,
+        cover: store.cover,
+        status: store.status,
+        location: {
+            type: "Point",
+            coordinates: store.location.coordinates,
+            address: store.location.address,
+        },
+    });
     await newStore.save();
     return newStore;
 };

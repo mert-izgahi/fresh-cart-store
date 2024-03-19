@@ -22,7 +22,7 @@ import {
     useUpdateCategoryMutation,
 } from "@/redux/categories/api";
 import { ICategory } from "@/server/models/Category.model";
-import FormContainer from "../ui/FormContainer";
+import FormContainer from "../shared/FormContainer";
 import { notifications } from "@mantine/notifications";
 import { IoAlertCircle, IoCheckmarkCircle } from "react-icons/io5";
 

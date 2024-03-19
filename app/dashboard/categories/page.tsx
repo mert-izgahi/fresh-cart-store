@@ -1,6 +1,6 @@
 import SearchForm from "@/components/forms/SearchForm";
 import CategoriesTable from "@/components/tables/CategoriesTable";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/shared/PageHeader";
 import {
     Breadcrumbs,
     Button,
