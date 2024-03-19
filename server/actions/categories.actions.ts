@@ -1,15 +1,9 @@
 import { connectDb } from "../utils/connectDb";
 import Category, { ICategory } from "../models/Category.model";
+import { QueryType } from "@/types";
 
-interface Query {
-    status?: string;
-    name?: string;
-}
-
-export const getAllCategories = async (queryObj: Query) => {
+export const getAllCategories = async (queryObj: QueryType) => {
     await connectDb();
-    console.log(queryObj);
-
     const categories = await Category.find(queryObj);
     return categories;
 };

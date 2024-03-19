@@ -1,9 +1,12 @@
 import { connectDb } from "../utils/connectDb";
 import Store, { IStore } from "../models/Store.model";
+import { QueryType } from "@/types";
 
-export const getAllStores = async () => {
+export const getAllStores = async (queryObj: QueryType) => {
     await connectDb();
-    const stores = await Store.find();
+    console.log(queryObj);
+
+    const stores = await Store.find(queryObj);
     return stores;
 };
 

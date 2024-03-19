@@ -163,7 +163,7 @@ function CategoriesTable() {
             columns={columns}
             records={data}
             noRecordsText="No categories found"
-            mih={data ? "auto" : 400}
+            mih={data.length > 0 ? "auto" : 400}
         />
     );
 }

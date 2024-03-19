@@ -1,9 +1,11 @@
 import { createStore, getAllStores } from "@/server/actions/stores.actions";
 import { asyncWrapper } from "@/server/utils/asyncWrapper";
+import { generateQueryObj } from "@/server/utils/generateQuery";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = asyncWrapper(async () => {
-    const stores = await getAllStores();
+export const GET = asyncWrapper(async (req: NextRequest) => {
+    const queryObj = await generateQueryObj(req);
+    const stores = await getAllStores(queryObj);
     return NextResponse.json(stores, { status: 200 });
 });
 

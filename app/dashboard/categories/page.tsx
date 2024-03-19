@@ -24,7 +24,10 @@ function CategoriesPage() {
                 createButtonUrl="/dashboard/categories/create"
             />
             <Stack>
-                <SearchForm inputPlaceholder="Search Categories" />
+                <SearchForm
+                    searchModel="categories"
+                    inputPlaceholder="Search Categories"
+                />
                 <CategoriesTable />
             </Stack>
         </Container>

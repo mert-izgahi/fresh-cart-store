@@ -3,26 +3,11 @@ import {
     getAllCategories,
 } from "@/server/actions/categories.actions";
 import { asyncWrapper } from "@/server/utils/asyncWrapper";
+import { generateQueryObj } from "@/server/utils/generateQuery";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = asyncWrapper(async (req: NextRequest) => {
-    const params = req.nextUrl.searchParams;
-    let queryObj = {};
-
-    if (params.has("status")) {
-        queryObj = {
-            ...queryObj,
-            status: params.get("status"),
-        };
-    }
-
-    if (params.has("q")) {
-        queryObj = {
-            ...queryObj,
-            name: { $regex: params.get("q"), $options: "i" },
-        };
-    }
-
+    let queryObj = await generateQueryObj(req);
     const categories = await getAllCategories(queryObj);
     return NextResponse.json(categories, { status: 200 });
 });

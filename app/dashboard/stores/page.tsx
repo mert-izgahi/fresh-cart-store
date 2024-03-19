@@ -15,7 +15,10 @@ function StoresPage() {
                 createButtonUrl="/dashboard/stores/create"
             />
             <Stack>
-                <SearchForm inputPlaceholder="Search Stores" />
+                <SearchForm
+                    inputPlaceholder="Search Stores"
+                    searchModel="stores"
+                />
                 <StoresTable />
             </Stack>
         </Container>

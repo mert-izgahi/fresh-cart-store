@@ -5,8 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 interface Props {
     inputPlaceholder: string;
+    searchModel: "categories" | "stores" | "products";
 }
-function SearchForm({ inputPlaceholder }: Props) {
+function SearchForm({ inputPlaceholder, searchModel }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -17,7 +18,7 @@ function SearchForm({ inputPlaceholder }: Props) {
         } else {
             searchQuery.set("status", value);
         }
-        router.push(`/dashboard/categories?${searchQuery.toString()}`);
+        router.push(`/dashboard/${searchModel}?${searchQuery.toString()}`);
     };
 
     const onSearch = (e: any) => {
@@ -30,7 +31,7 @@ function SearchForm({ inputPlaceholder }: Props) {
         } else {
             searchQuery.delete("q");
         }
-        router.push(`/dashboard/categories?${searchQuery.toString()}`);
+        router.push(`/dashboard/${searchModel}?${searchQuery.toString()}`);
     };
     return (
         <Flex justify="space-between" align={"center"}>
