@@ -18,6 +18,7 @@ export const GET = asyncWrapper(
 export const PATCH = asyncWrapper(
     async (req: NextRequest, { params }: IParams) => {
         const body = await req.json();
+
         const order = await updateOrder(params.id, body);
         return NextResponse.json(order, { status: 200 });
     }

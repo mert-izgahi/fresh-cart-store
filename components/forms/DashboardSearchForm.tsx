@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 interface Props {
     inputPlaceholder: string;
-    searchModel: "categories" | "stores" | "products";
+    searchModel: "categories" | "stores" | "products" | "orders";
 }
 function DashboardSearchForm({ inputPlaceholder, searchModel }: Props) {
     const router = useRouter();

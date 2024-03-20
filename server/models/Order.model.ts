@@ -7,7 +7,7 @@ export interface IOrder extends Document {
     shippingAddress: IShippingAddress;
     orderItems: ICartItem[];
     isPaid: boolean;
-    isDelivered: boolean;
+    status: "pending" | "processing" | "shipped" | "delivered";
     paymentMethod: string;
     paymentResult: {
         id: string;
@@ -71,10 +71,10 @@ const orderSchema = new mongoose.Schema<IOrder>({
         required: true,
         default: false,
     },
-    isDelivered: {
-        type: Boolean,
-        required: true,
-        default: false,
+    status: {
+        type: String,
+        enum: ["pending", "processing", "shipped", "delivered"],
+        default: "pending",
     },
     paymentMethod: {
         type: String,

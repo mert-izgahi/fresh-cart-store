@@ -18,6 +18,7 @@ export const asyncWrapper = (
                     }
                 );
             }
+            console.log(error);
 
             return NextResponse.json(
                 {

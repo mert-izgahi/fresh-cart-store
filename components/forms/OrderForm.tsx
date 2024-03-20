@@ -19,7 +19,6 @@ export interface orderInput {
     shippingAddress: IShippingAddress;
     orderItems: ICartItem[];
     isPaid: boolean;
-    isDelivered: boolean;
     paymentMethod: string;
     paymentResult: {
         id: string;
@@ -52,7 +51,6 @@ function OrderForm() {
             },
             orderItems: [],
             isPaid: false,
-            isDelivered: false,
             paymentMethod: "",
             paymentResult: {
                 id: "",
