@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@clerk/nextjs": "^4.29.9",
         "@mantine/carousel": "^7.6.2",
         "@mantine/charts": "^7.6.2",
         "@mantine/core": "^7.6.2",
@@ -31,6 +32,7 @@
         "recharts": "^2.12.3",
         "redux-persist": "^6.0.0",
         "slugify": "^1.6.6",
+        "svix": "^1.21.0",
         "uploadthing": "^6.6.0"
     },
     "devDependencies": {

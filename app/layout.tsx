@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import "@mantine/core/styles.css";
 import "@mantine/core/styles.layer.css";
@@ -20,10 +21,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={font.className}>
-                <Providers>{children}</Providers>
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang="en">
+                <body className={font.className}>
+                    <Providers>{children}</Providers>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }

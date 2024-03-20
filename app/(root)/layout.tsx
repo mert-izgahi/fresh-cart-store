@@ -3,6 +3,7 @@
 import RootSearchForm from "@/components/forms/RootSearchForm";
 import Logo from "@/components/shared/Logo";
 import { useGetCategoriesQuery } from "@/redux/categories/api";
+import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import {
     ActionIcon,
     AppShell,
@@ -75,17 +76,6 @@ function layout({ children }: { children: React.ReactNode }) {
                                 </ActionIcon>
                             </Tooltip>
 
-                            <Tooltip label="Account">
-                                <ActionIcon
-                                    variant="subtle"
-                                    size="lg"
-                                    component={Link}
-                                    href="/account"
-                                >
-                                    <IoPersonOutline />
-                                </ActionIcon>
-                            </Tooltip>
-
                             <Tooltip label="Cart">
                                 <ActionIcon
                                     variant="subtle"
@@ -96,6 +86,21 @@ function layout({ children }: { children: React.ReactNode }) {
                                     <IoCartOutline />
                                 </ActionIcon>
                             </Tooltip>
+
+                            <SignedIn>
+                                <Tooltip label="Account">
+                                    <ActionIcon
+                                        variant="subtle"
+                                        size="lg"
+                                        component={Link}
+                                        href="/account"
+                                    >
+                                        <IoPersonOutline />
+                                    </ActionIcon>
+                                </Tooltip>
+
+                                <SignOutButton>Sign out</SignOutButton>
+                            </SignedIn>
                         </Flex>
                     </Flex>
                 </Container>
