@@ -14,16 +14,8 @@ interface cartState {
 }
 
 const initialState: cartState = {
-    items: [
-        {
-            _id: "65f9b2237b092821da941aff",
-            name: "Haldiram's Sev Bhujia",
-            image: "https://utfs.io/f/5483b575-a5c7-4286-a00c-413b0f25d863-wntmf.jpg",
-            price: 100,
-            quantity: 1,
-        },
-    ],
-    total: 100,
+    items: [],
+    total: 0,
 };
 
 export const cartSlice = createSlice({

@@ -2,6 +2,7 @@
 import { IProduct } from "@/server/models/Product.model";
 import {
     ActionIcon,
+    Anchor,
     Button,
     Card,
     CardSection,
@@ -56,7 +57,9 @@ function ProductCard({ product, isLoading }: Props) {
 
             <CardSection p="md">
                 <Stack gap="md">
-                    <Text>{product.name}</Text>
+                    <Anchor href={`/products/${product._id}`} c="dark">
+                        {product.name}
+                    </Anchor>
                     <Flex justify="space-between" align="center">
                         <Text>${product.price}</Text>
                         <Button size="xs" leftSection={<IoAddOutline />}>

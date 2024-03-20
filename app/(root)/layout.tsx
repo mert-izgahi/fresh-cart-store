@@ -30,7 +30,7 @@ function layout({ children }: { children: React.ReactNode }) {
             <AppShellHeader>
                 <Container size="xl">
                     <Flex align="center" h={60} gap={"md"}>
-                        <Logo />
+                        <Logo href="/" />
                         <RootSearchForm />
 
                         <Flex align="center" gap="md" ml={"auto"}>

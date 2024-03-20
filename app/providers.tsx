@@ -6,7 +6,8 @@ import theme from "@/theme";
 import { Provider } from "react-redux";
 import { Notifications } from "@mantine/notifications";
 
-import store from "@/redux/store";
+import store, { persistor } from "@/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 function Providers({ children }: { children: React.ReactNode }) {
     const [hasMounted, setHasMounted] = useState(false);
@@ -16,15 +17,17 @@ function Providers({ children }: { children: React.ReactNode }) {
     }, []);
 
     if (!hasMounted) {
-        return null;
+        return <>loading...</>;
     }
 
     return (
         <Provider store={store}>
-            <MantineProvider theme={theme} defaultColorScheme="light">
-                <Notifications />
-                {children}
-            </MantineProvider>
+            <PersistGate loading={null} persistor={persistor}>
+                <MantineProvider theme={theme} defaultColorScheme="light">
+                    <Notifications />
+                    {children}
+                </MantineProvider>
+            </PersistGate>
         </Provider>
     );
 }

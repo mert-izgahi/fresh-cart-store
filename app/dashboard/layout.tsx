@@ -91,7 +91,7 @@ function layout({ children }: { children: React.ReactNode }) {
                         opened={opened}
                         onClick={toggle}
                     />
-                    <Logo />
+                    <Logo href="/dashboard" />
 
                     <Flex flex={1} justify="flex-end">
                         <Avatar radius="xl" src="https://i.pravatar.cc/300" />

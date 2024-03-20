@@ -13,6 +13,7 @@ import {
 import React from "react";
 import { IoRemoveOutline, IoCartOutline } from "react-icons/io5";
 import { removeFromCart } from "@/redux/cart/slice";
+import Link from "next/link";
 
 function CartItemsList() {
     const { items, total } = useAppSelector((state) => state.cart);
@@ -30,24 +31,28 @@ function CartItemsList() {
             <CardSection p="md">
                 <Stack>
                     {items.map((item) => (
-                        <Flex
-                            align="center"
-                            justify="space-between"
-                            key={item._id}
-                        >
-                            <Image src={item.image} width={50} height={50} />
-                            <Flex align="center" gap="md">
-                                <Text>{item.name}</Text>
-                                <Text>${item.price}</Text>
-                                <Button
-                                    onClick={() => onRemove(item._id)}
-                                    size="xs"
-                                    variant="subtle"
-                                >
-                                    remove
-                                </Button>
+                        <Stack key={item._id}>
+                            <Flex align="center" justify="space-between">
+                                <Image
+                                    src={item.image}
+                                    width={50}
+                                    height={50}
+                                />
+                                <Flex align="center" gap="md">
+                                    <Text>{item.name}</Text>
+                                    <Text>${item.price}</Text>
+                                    <Text>{item.quantity}</Text>
+                                </Flex>
                             </Flex>
-                        </Flex>
+                            <Button
+                                onClick={() => onRemove(item._id)}
+                                size="xs"
+                                variant="outline"
+                                style={{ marginLeft: "auto" }}
+                            >
+                                remove
+                            </Button>
+                        </Stack>
                     ))}
                 </Stack>
             </CardSection>
@@ -55,6 +60,7 @@ function CartItemsList() {
             <CardSection p="md">
                 <Flex align="center" justify="space-between">
                     <Text>Total</Text>
+
                     <Text>${total}</Text>
                 </Flex>
             </CardSection>
@@ -64,6 +70,8 @@ function CartItemsList() {
                     fullWidth
                     variant="outline"
                     leftSection={<IoCartOutline />}
+                    component={Link}
+                    href="/checkout"
                 >
                     Checkout
                 </Button>
