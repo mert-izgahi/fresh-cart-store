@@ -7,8 +7,6 @@ export const asyncWrapper = (
         try {
             return await fn(req, params);
         } catch (error: any) {
-            console.log(error);
-
             if (error.name === "ValidationError") {
                 return NextResponse.json(
                     {

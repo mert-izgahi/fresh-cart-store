@@ -16,6 +16,7 @@ export const GET = asyncWrapper(async (req: NextRequest) => {
         );
     }
     const user = await getAccount(userId);
+
     return NextResponse.json(user, { status: 200 });
 });
 

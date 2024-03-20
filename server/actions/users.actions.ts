@@ -23,6 +23,7 @@ export const createUser = async (user: IUser) => {
 
 export const getAccount = async (clerkId: string) => {
     await connectDb();
+
     const user = await User.findOne({ clerkId });
     if (!user) return null;
     return user;

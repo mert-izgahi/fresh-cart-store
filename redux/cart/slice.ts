@@ -1,21 +1,20 @@
+import { ICartItem } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface ICartItem {
-    _id: string;
-    name: string;
-    image: string;
-    price: number;
-    quantity: number;
-}
 
 interface cartState {
     items: ICartItem[];
-    total: number;
+    itemsPrice: number;
+    taxPrice: number;
+    shippingPrice: number;
+    totalPrice: number;
 }
 
 const initialState: cartState = {
     items: [],
-    total: 0,
+    itemsPrice: 0,
+    taxPrice: 0,
+    shippingPrice: 0,
+    totalPrice: 0,
 };
 
 export const cartSlice = createSlice({
@@ -33,7 +32,11 @@ export const cartSlice = createSlice({
                 state.items.push(action.payload);
             }
 
-            state.total += action.payload.price * action.payload.quantity;
+            state.itemsPrice += action.payload.price * action.payload.quantity;
+            state.taxPrice = Math.ceil(state.itemsPrice * 0.01);
+            state.shippingPrice = Math.ceil(state.itemsPrice * 0.01);
+            state.totalPrice =
+                state.itemsPrice + state.taxPrice + state.shippingPrice;
         },
         removeFromCart: (
             state: cartState,
@@ -50,7 +53,11 @@ export const cartSlice = createSlice({
                 state.items.splice(itemIndex, 1);
             }
 
-            state.total -= selectedItem.price;
+            state.itemsPrice -= selectedItem.price;
+            state.taxPrice = Math.ceil(state.itemsPrice * 0.01);
+            state.shippingPrice = Math.ceil(state.itemsPrice * 0.01);
+            state.totalPrice =
+                state.itemsPrice + state.taxPrice + state.shippingPrice;
         },
     },
 });

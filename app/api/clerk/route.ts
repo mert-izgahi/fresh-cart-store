@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { IUser } from "@/server/models/User.model";
-import { createUser } from "@/server/actions/users.actions";
+import { createUser, getAccount } from "@/server/actions/users.actions";
 const webhookSecret = process.env.NEXT_PUBLIC_CLERK_WEBHOOK_SECRET || ``;
 
 async function validateRequest(request: Request) {
@@ -33,11 +33,13 @@ export async function POST(request: Request) {
                 fullName,
                 email,
                 clerkId,
-                shippingAddress: [],
                 role: "user",
                 status: "active",
             } as IUser;
-
+            const exists = await getAccount(clerkId);
+            if (exists) {
+                return Response.json({ message: "User already exists" });
+            }
             await createUser(newUser);
         }
 

@@ -2,11 +2,15 @@
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+
+import { setupListeners } from "@reduxjs/toolkit/query";
 import { cartSlice } from "./cart/slice";
+
 import { categoriesApi } from "./categories/api";
 import { storesApi } from "./stores/api";
 import { productsApi } from "./products/api";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import { ordersApi } from "./orders/api";
+import { accountApi } from "./account/api";
 import {
     persistReducer,
     persistStore,
@@ -25,6 +29,8 @@ const rootReducer = combineReducers({
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [storesApi.reducerPath]: storesApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
+    [accountApi.reducerPath]: accountApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
 });
 
 const persistConfig = {
@@ -60,7 +66,9 @@ const store = configureStore({
             .concat(productsApi.middleware)
             .concat(categoriesApi.middleware)
             .concat(storesApi.middleware)
-            .concat(productsApi.middleware),
+            .concat(productsApi.middleware)
+            .concat(accountApi.middleware)
+            .concat(ordersApi.middleware),
     devTools: true,
 });
 

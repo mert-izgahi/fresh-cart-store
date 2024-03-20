@@ -15,8 +15,15 @@ import { IoRemoveOutline, IoCartOutline } from "react-icons/io5";
 import { removeFromCart } from "@/redux/cart/slice";
 import Link from "next/link";
 
-function CartItemsList() {
-    const { items, total } = useAppSelector((state) => state.cart);
+interface Props {
+    withTax?: boolean;
+    withShipping?: boolean;
+    withTotal?: boolean;
+}
+
+function CartItemsList({ withTax, withShipping, withTotal }: Props) {
+    const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
+        useAppSelector((state) => state.cart);
     const dispatch = useAppDispatch();
     const onRemove = (productId: string) => {
         dispatch(removeFromCart({ _id: productId }));
@@ -58,11 +65,36 @@ function CartItemsList() {
             </CardSection>
 
             <CardSection p="md">
-                <Flex align="center" justify="space-between">
-                    <Text>Total</Text>
+                <Stack>
+                    {withTotal && (
+                        <Flex align="center" justify="space-between">
+                            <Text>Items Total</Text>
 
-                    <Text>${total}</Text>
-                </Flex>
+                            <Text>${itemsPrice}</Text>
+                        </Flex>
+                    )}
+
+                    {withShipping && (
+                        <Flex align="center" justify="space-between">
+                            <Text>Tax</Text>
+                            <Text>${taxPrice}</Text>
+                        </Flex>
+                    )}
+
+                    {withTax && (
+                        <Flex align="center" justify="space-between">
+                            <Text>Shipping</Text>
+                            <Text>${shippingPrice}</Text>
+                        </Flex>
+                    )}
+
+                    {withTotal && (
+                        <Flex align="center" justify="space-between">
+                            <Text>Total</Text>
+                            <Text>${totalPrice}</Text>
+                        </Flex>
+                    )}
+                </Stack>
             </CardSection>
 
             <CardSection p="md">

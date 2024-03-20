@@ -1,16 +1,10 @@
 import mongoose from "mongoose";
-
-export interface IShippingAddress {
-    type: "ShippingAddress";
-    address: string;
-    postalCode: string;
-}
+import Order from "./Order.model";
 
 export interface IUser {
     fullName: string;
     email: string;
     clerkId: string;
-    shippingAddress: IShippingAddress[];
     role: string;
     status: "active" | "disabled";
 }
@@ -30,23 +24,6 @@ const userSchema = new mongoose.Schema<IUser>({
         required: true,
         unique: true,
     },
-    shippingAddress: [
-        {
-            type: {
-                type: String,
-                default: "ShippingAddress",
-                enum: ["ShippingAddress"],
-            },
-            address: {
-                type: String,
-                required: true,
-            },
-            postalCode: {
-                type: String,
-                required: true,
-            },
-        },
-    ],
     role: {
         type: String,
         default: "user",
@@ -56,6 +33,24 @@ const userSchema = new mongoose.Schema<IUser>({
         enum: ["active", "disabled"],
         default: "active",
     },
+});
+userSchema.virtual("orders", {
+    ref: "Order",
+    localField: "_id",
+    foreignField: "user",
+    justOne: false,
+});
+userSchema.pre("findOne", function (next) {
+    this.populate({ path: "orders", model: Order });
+    next();
+});
+
+userSchema.set("toJSON", {
+    virtuals: true,
+});
+
+userSchema.set("toObject", {
+    virtuals: true,
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
