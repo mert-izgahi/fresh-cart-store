@@ -23,7 +23,7 @@ export const cartSlice = createSlice({
     reducers: {
         addToCart: (state: cartState, action: PayloadAction<ICartItem>) => {
             const itemIndex = state.items.findIndex(
-                (item) => item._id === action.payload._id
+                (item) => item.productId === action.payload.productId
             );
 
             if (itemIndex >= 0) {
@@ -40,10 +40,10 @@ export const cartSlice = createSlice({
         },
         removeFromCart: (
             state: cartState,
-            action: PayloadAction<{ _id: string }>
+            action: PayloadAction<{ productId: string }>
         ) => {
             const itemIndex = state.items.findIndex(
-                (item) => item._id === action.payload._id
+                (item) => item.productId === action.payload.productId
             );
             const selectedItem = state.items[itemIndex];
 

@@ -3,7 +3,6 @@ export interface QueryType {
     name?: string;
 }
 export interface ICartItem {
-    _id: string;
     name: string;
     image: string;
     price: number;

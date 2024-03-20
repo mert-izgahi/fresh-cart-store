@@ -37,6 +37,13 @@ const persistConfig = {
     key: "root",
     version: 1,
     storage,
+    blacklist: [
+        categoriesApi.reducerPath,
+        storesApi.reducerPath,
+        productsApi.reducerPath,
+        accountApi.reducerPath,
+        ordersApi.reducerPath,
+    ],
 };
 
 // Create a persist reducer

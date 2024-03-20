@@ -19,14 +19,20 @@ interface Props {
     withTax?: boolean;
     withShipping?: boolean;
     withTotal?: boolean;
+    withCheckoutButton?: boolean;
 }
 
-function CartItemsList({ withTax, withShipping, withTotal }: Props) {
+function CartItemsList({
+    withTax,
+    withShipping,
+    withTotal,
+    withCheckoutButton,
+}: Props) {
     const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
         useAppSelector((state) => state.cart);
     const dispatch = useAppDispatch();
     const onRemove = (productId: string) => {
-        dispatch(removeFromCart({ _id: productId }));
+        dispatch(removeFromCart({ productId }));
     };
     return (
         <Card>
@@ -38,7 +44,7 @@ function CartItemsList({ withTax, withShipping, withTotal }: Props) {
             <CardSection p="md">
                 <Stack>
                     {items.map((item) => (
-                        <Stack key={item._id}>
+                        <Stack key={item.productId}>
                             <Flex align="center" justify="space-between">
                                 <Image
                                     src={item.image}
@@ -52,7 +58,7 @@ function CartItemsList({ withTax, withShipping, withTotal }: Props) {
                                 </Flex>
                             </Flex>
                             <Button
-                                onClick={() => onRemove(item._id)}
+                                onClick={() => onRemove(item.productId)}
                                 size="xs"
                                 variant="outline"
                                 style={{ marginLeft: "auto" }}
@@ -97,17 +103,19 @@ function CartItemsList({ withTax, withShipping, withTotal }: Props) {
                 </Stack>
             </CardSection>
 
-            <CardSection p="md">
-                <Button
-                    fullWidth
-                    variant="outline"
-                    leftSection={<IoCartOutline />}
-                    component={Link}
-                    href="/checkout"
-                >
-                    Checkout
-                </Button>
-            </CardSection>
+            {withCheckoutButton && (
+                <CardSection p="md">
+                    <Button
+                        fullWidth
+                        variant="outline"
+                        leftSection={<IoCartOutline />}
+                        component={Link}
+                        href="/checkout"
+                    >
+                        Checkout
+                    </Button>
+                </CardSection>
+            )}
         </Card>
     );
 }

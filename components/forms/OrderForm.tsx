@@ -6,9 +6,12 @@ import { ICartItem, IShippingAddress } from "@/types";
 import { useForm } from "@mantine/form";
 import React, { useEffect } from "react";
 import FormContainer from "../shared/FormContainer";
-import { Flex, Stack, TextInput } from "@mantine/core";
+import { Button, Flex, Stack, TextInput } from "@mantine/core";
 import { useAppSelector } from "@/redux/store";
 import CartItemsList from "../shared/CartItemsList";
+import { useCreateOrderMutation } from "@/redux/orders/api";
+import { notifications } from "@mantine/notifications";
+import { IoAlertCircle, IoCheckmarkCircle } from "react-icons/io5";
 
 export interface orderInput {
     name: string;
@@ -34,50 +37,85 @@ export interface orderInput {
 
 function OrderForm() {
     const { data: account, isLoading } = useGetAccountQuery({});
-    // const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
-    //     useAppSelector((state) => state.cart);
-    // const form = useForm<orderInput>({
-    //     initialValues: {
-    //         name: "",
-    //         email: "",
-    //         shippingAddress: {
-    //             type: "ShippingAddress",
-    //             address: "",
-    //             postalCode: "",
-    //         },
-    //         orderItems: [],
-    //         isPaid: false,
-    //         isDelivered: false,
-    //         paymentMethod: "",
-    //         paymentResult: {
-    //             id: "",
-    //             status: "",
-    //             update_time: "",
-    //             email_address: "",
-    //         },
-    //         itemsPrice: 0,
-    //         taxPrice: 0,
-    //         shippingPrice: 0,
-    //         totalPrice: 0,
-    //         user: "",
-    //     },
-    // });
+    const [createOrder, { isLoading: isCreatingOrder }] =
+        useCreateOrderMutation();
+    const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
+        useAppSelector((state) => state.cart);
+    const form = useForm<orderInput>({
+        initialValues: {
+            name: "",
+            email: "",
+            shippingAddress: {
+                type: "ShippingAddress",
+                address: "",
+                postalCode: "",
+            },
+            orderItems: [],
+            isPaid: false,
+            isDelivered: false,
+            paymentMethod: "",
+            paymentResult: {
+                id: "",
+                status: "",
+                update_time: "",
+                email_address: "",
+            },
+            itemsPrice: 0,
+            taxPrice: 0,
+            shippingPrice: 0,
+            totalPrice: 0,
+            user: "",
+        },
+    });
 
-    // const onSubmit = (values: orderInput) => {
-    //     console.log(values);
-    // };
+    const onSubmit = async (values: orderInput) => {
+        const id = notifications.show({
+            id: "loading",
+            title: "Loading",
+            message: "Creating Order",
+            loading: true,
+            autoClose: false,
+            disallowClose: true,
+        });
+        await createOrder(values)
+            .unwrap()
+            .then(() => {
+                notifications.update({
+                    id,
+                    color: "green",
+                    loading: false,
+                    autoClose: 2000,
+                    title: "Success",
+                    message: "Order created successfully",
+                    icon: <IoCheckmarkCircle size={16} />,
+                });
 
-    // useEffect(() => {
-    //     form.setFieldValue("itemsPrice", itemsPrice);
-    //     form.setFieldValue("taxPrice", taxPrice);
-    //     form.setFieldValue("shippingPrice", shippingPrice);
-    //     form.setFieldValue("totalPrice", totalPrice);
-    //     form.setFieldValue("orderItems", items);
-    //     form.setFieldValue("user", account?._id);
-    //     form.setFieldValue("paymentMethod", "Stripe");
-    //     form.setFieldValue("name", account?.name);
-    //     form.setFieldValue("email", account?.email);
-    // }, [itemsPrice, taxPrice, shippingPrice, totalPrice, items, account]);
+                form.reset();
+            })
+            .catch((error) => {
+                notifications.update({
+                    id,
+                    color: "red",
+                    title: "Error",
+                    loading: false,
+                    autoClose: 2000,
+                    message: error.data.message,
+                    icon: <IoAlertCircle size={16} />,
+                });
+            });
+    };
+
+    useEffect(() => {
+        form.setFieldValue("itemsPrice", itemsPrice);
+        form.setFieldValue("taxPrice", taxPrice);
+        form.setFieldValue("shippingPrice", shippingPrice);
+        form.setFieldValue("totalPrice", totalPrice);
+        form.setFieldValue("orderItems", items);
+        form.setFieldValue("user", account?._id);
+        form.setFieldValue("paymentMethod", "Stripe");
+        form.setFieldValue("name", account?.fullName);
+        form.setFieldValue("email", account?.email);
+    }, [itemsPrice, taxPrice, shippingPrice, totalPrice, items, account]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -85,9 +123,6 @@ function OrderForm() {
     return (
         <FormContainer>
             <pre>
-                <code>{JSON.stringify(account, null, 2)}</code>
-            </pre>
-            {/* <pre>
                 <code>{JSON.stringify(form.values, null, 2)}</code>
             </pre>
             <form
@@ -130,8 +165,12 @@ function OrderForm() {
                     </Flex>
 
                     <CartItemsList withShipping withTax withTotal />
+
+                    <Button type="submit" loading={isCreatingOrder}>
+                        Create Order
+                    </Button>
                 </Stack>
-            </form> */}
+            </form>
         </FormContainer>
     );
 }

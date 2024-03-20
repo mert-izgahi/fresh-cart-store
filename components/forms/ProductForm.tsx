@@ -257,9 +257,6 @@ function ProductForm({ mode, productId }: Props) {
     }, [product]);
     return (
         <FormContainer>
-            <pre>
-                <code>{JSON.stringify(form.values, null, 2)}</code>
-            </pre>
             <form
                 onSubmit={form.onSubmit(onSubmit)}
                 autoComplete="off"

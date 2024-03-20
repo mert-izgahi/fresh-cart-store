@@ -25,7 +25,7 @@ function AddProductToCartButton({
     const onAdd = () => {
         dispatch(
             addToCart({
-                _id: productId,
+                productId: productId,
                 name: name,
                 image: image,
                 price: price,
