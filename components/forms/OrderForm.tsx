@@ -6,12 +6,20 @@ import { ICartItem, IShippingAddress } from "@/types";
 import { useForm } from "@mantine/form";
 import React, { useEffect } from "react";
 import FormContainer from "../shared/FormContainer";
-import { Button, Flex, Stack, TextInput } from "@mantine/core";
+import { Box, Button, Flex, Stack, TextInput } from "@mantine/core";
 import { useAppSelector } from "@/redux/store";
 import CartItemsList from "../shared/CartItemsList";
-import { useCreateOrderMutation } from "@/redux/orders/api";
+import {
+    useCreateOrderMutation,
+    usePayOrderMutation,
+} from "@/redux/orders/api";
 import { notifications } from "@mantine/notifications";
-import { IoAlertCircle, IoCheckmarkCircle } from "react-icons/io5";
+import {
+    IoAlertCircle,
+    IoCheckmarkCircle,
+    IoCartOutline,
+} from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 export interface orderInput {
     name: string;
@@ -35,9 +43,12 @@ export interface orderInput {
 }
 
 function OrderForm() {
+    const router = useRouter();
     const { data: account, isLoading } = useGetAccountQuery({});
     const [createOrder, { isLoading: isCreatingOrder }] =
         useCreateOrderMutation();
+
+    const [payOrder, { isLoading: isPayingOrder }] = usePayOrderMutation();
     const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
         useAppSelector((state) => state.cart);
     const form = useForm<orderInput>({
@@ -77,27 +88,45 @@ function OrderForm() {
         });
         await createOrder(values)
             .unwrap()
-            .then(() => {
-                notifications.update({
-                    id,
-                    color: "green",
-                    loading: false,
-                    autoClose: 2000,
-                    title: "Success",
-                    message: "Order created successfully",
-                    icon: <IoCheckmarkCircle size={16} />,
-                });
+            .then(async (newOrder) => {
+                const orderId = newOrder._id;
 
-                form.reset();
+                if (orderId) {
+                    const session = (await payOrder({
+                        id: orderId,
+                    })) as any;
+
+                    if (session) {
+                        const { data } = session;
+
+                        const paymentUrl = data?.url as string;
+                        console.log("paymentUrl", paymentUrl);
+
+                        notifications.update({
+                            id,
+                            color: "blue",
+                            loading: true,
+                            disallowClose: true,
+                            title: "Waiting for payment",
+                            message:
+                                "Please wait while we redirect you to payment page",
+                            icon: <IoCheckmarkCircle size={16} />,
+                        });
+
+                        router.replace(paymentUrl);
+                    }
+                }
             })
             .catch((error) => {
+                console.log(error);
+
                 notifications.update({
                     id,
                     color: "red",
                     title: "Error",
                     loading: false,
                     autoClose: 2000,
-                    message: error.data.message,
+                    message: "Something went wrong. Please try again",
                     icon: <IoAlertCircle size={16} />,
                 });
             });
@@ -120,9 +149,6 @@ function OrderForm() {
     }
     return (
         <FormContainer>
-            <pre>
-                <code>{JSON.stringify(form.values, null, 2)}</code>
-            </pre>
             <form
                 onSubmit={form.onSubmit(onSubmit)}
                 autoComplete="off"
@@ -164,9 +190,15 @@ function OrderForm() {
 
                     <CartItemsList withShipping withTax withTotal />
 
-                    <Button type="submit" loading={isCreatingOrder}>
-                        Create Order
-                    </Button>
+                    <Flex justify="flex-end">
+                        <Button
+                            leftSection={<IoCartOutline />}
+                            type="submit"
+                            loading={isCreatingOrder}
+                        >
+                            Pay Now
+                        </Button>
+                    </Flex>
                 </Stack>
             </form>
         </FormContainer>

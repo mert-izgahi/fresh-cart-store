@@ -30,6 +30,7 @@ function CartItemsList({
 }: Props) {
     const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
         useAppSelector((state) => state.cart);
+
     const dispatch = useAppDispatch();
     const onRemove = (productId: string) => {
         dispatch(removeFromCart({ productId }));

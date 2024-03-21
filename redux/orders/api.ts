@@ -35,6 +35,14 @@ export const ordersApi = createApi({
             query: ({ id }: { id: string }) => `/orders/${id}`,
             providesTags: ["Orders"],
         }),
+
+        payOrder: builder.mutation({
+            query: ({ id }) => ({
+                url: `/orders/${id}/pay`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Orders"],
+        }),
     }),
 });
 
@@ -43,4 +51,5 @@ export const {
     useCreateOrderMutation,
     useUpdateOrderMutation,
     useGetOrderQuery,
+    usePayOrderMutation,
 } = ordersApi;

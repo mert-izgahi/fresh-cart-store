@@ -19,7 +19,7 @@ export interface IOrder extends Document {
     taxPrice: number;
     shippingPrice: number;
     totalPrice: number;
-
+    payment_intent: string | undefined;
     user: mongoose.Types.ObjectId;
 }
 
@@ -85,6 +85,9 @@ const orderSchema = new mongoose.Schema<IOrder>({
         status: String,
         update_time: String,
         email_address: String,
+    },
+    payment_intent: {
+        type: String,
     },
     itemsPrice: {
         type: Number,

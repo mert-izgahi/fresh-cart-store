@@ -11,11 +11,12 @@ export default authMiddleware({
         "/sign-up",
         "/products/(.*)",
         "/api/clerk",
+        "/api/stripe",
         "/api/(.*)",
     ],
     // Prevent the specified routes from accessing
     // authentication information:
-    // ignoredRoutes: ['/no-auth-in-this-route'],
+    ignoredRoutes: ["/api/clerk", "/api/stripe"],
 });
 
 export const config = {
