@@ -2,8 +2,11 @@
 
 import RootSearchForm from "@/components/forms/RootSearchForm";
 import Logo from "@/components/shared/Logo";
+import { useGetAccountQuery } from "@/redux/account/api";
+import { setAccount, setIsAuthenticated } from "@/redux/account/slice";
 import { useGetCategoriesQuery } from "@/redux/categories/api";
-import { SignOutButton, SignedIn } from "@clerk/nextjs";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { SignOutButton, SignedIn, useClerk } from "@clerk/nextjs";
 import {
     ActionIcon,
     AppShell,
@@ -12,11 +15,10 @@ import {
     Button,
     Container,
     Flex,
-    Image,
-    Menu,
     Tooltip,
 } from "@mantine/core";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import {
     IoHeartOutline,
@@ -24,8 +26,17 @@ import {
     IoCartOutline,
 } from "react-icons/io5";
 function layout({ children }: { children: React.ReactNode }) {
-    const { data: categories, isLoading } = useGetCategoriesQuery({});
-
+    const { data: account } = useGetAccountQuery({});
+    const { signOut } = useClerk();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+    const { isAuthenticated } = useAppSelector((state) => state.account);
+    const onSignOut = async () => {
+        await signOut();
+        dispatch(setAccount(null));
+        dispatch(setIsAuthenticated(false));
+        router.push("/");
+    };
     return (
         <AppShell header={{ height: 60 }}>
             <AppShellHeader>
@@ -35,36 +46,6 @@ function layout({ children }: { children: React.ReactNode }) {
                         <RootSearchForm />
 
                         <Flex align="center" gap="md" ml={"auto"}>
-                            <Menu
-                                position="bottom-end"
-                                withArrow
-                                arrowPosition="center"
-                                trigger="click-hover"
-                                width={200}
-                            >
-                                <Menu.Target>
-                                    <Button variant="subtle" color="dark">
-                                        Categories
-                                    </Button>
-                                </Menu.Target>
-                                <Menu.Dropdown>
-                                    {categories?.map((category: any) => (
-                                        <Menu.Item
-                                            leftSection={
-                                                <Image
-                                                    src={category.image}
-                                                    alt={category.name}
-                                                    width={20}
-                                                    height={20}
-                                                />
-                                            }
-                                            key={category.id}
-                                        >
-                                            {category.name}
-                                        </Menu.Item>
-                                    ))}
-                                </Menu.Dropdown>
-                            </Menu>
                             <Tooltip label="Wishlist">
                                 <ActionIcon
                                     variant="subtle"
@@ -99,8 +80,16 @@ function layout({ children }: { children: React.ReactNode }) {
                                     </ActionIcon>
                                 </Tooltip>
 
-                                <SignOutButton>Sign out</SignOutButton>
+                                <Button variant="outline" onClick={onSignOut}>
+                                    Sign out
+                                </Button>
                             </SignedIn>
+
+                            {!isAuthenticated && (
+                                <Button component={Link} href="/sign-in">
+                                    Sign in
+                                </Button>
+                            )}
                         </Flex>
                     </Flex>
                 </Container>

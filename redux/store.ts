@@ -5,7 +5,7 @@ import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { cartSlice } from "./cart/slice";
-
+import { accountSlice } from "./account/slice";
 import { categoriesApi } from "./categories/api";
 import { storesApi } from "./stores/api";
 import { productsApi } from "./products/api";
@@ -26,6 +26,7 @@ import storage from "redux-persist/lib/storage";
 // Create a persist config
 const rootReducer = combineReducers({
     cart: cartSlice.reducer,
+    account: accountSlice.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [storesApi.reducerPath]: storesApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
