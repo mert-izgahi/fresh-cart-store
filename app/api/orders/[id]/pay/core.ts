@@ -22,8 +22,8 @@ export const createStripeSession = async (order: IOrder) => {
                 };
             }),
             mode: "payment",
-            success_url: `${process.env.FRONTEND_BASE_URL}/checkout`,
-            cancel_url: `${process.env.FRONTEND_BASE_URL}/checkout`,
+            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout`,
+            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout`,
             customer_email: order.email,
             client_reference_id: order._id.toString(),
             metadata: {

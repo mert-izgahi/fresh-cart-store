@@ -1,9 +1,18 @@
 "use client";
 
-import { Anchor, Badge, Button, Flex, Image, Modal, Text } from "@mantine/core";
+import {
+    Anchor,
+    Badge,
+    Button,
+    Flex,
+    Image,
+    Modal,
+    Stack,
+    Text,
+} from "@mantine/core";
 import { DataTable, DataTableColumn } from "mantine-datatable";
 import { IoPencilOutline, IoTrashOutline } from "react-icons/io5";
-import React from "react";
+import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
@@ -12,7 +21,7 @@ import {
     useGetProductsQuery,
 } from "@/redux/products/api";
 import { IProduct } from "@/server/models/Product.model";
-import { useDeleteStoreMutation } from "@/redux/stores/api";
+import Pagination from "../shared/Pagination";
 
 function EditStoreButton({ storeId }: { storeId: string }) {
     const router = useRouter();
@@ -149,23 +158,31 @@ function ProductsTable() {
             },
         },
     ];
-
+    const records = useMemo(() => {
+        return data?.records;
+    }, [data]);
+    const totalPages = useMemo(() => {
+        return data?.totalPages;
+    }, [data]);
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <DataTable
-            borderRadius="sm"
-            withTableBorder
-            highlightOnHover
-            verticalSpacing="md"
-            shadow="none"
-            columns={columns}
-            records={data}
-            noRecordsText="No categories found"
-            mih={data.length > 0 ? "auto" : 400}
-        />
+        <Stack>
+            <DataTable
+                borderRadius="sm"
+                withTableBorder
+                highlightOnHover
+                verticalSpacing="md"
+                shadow="none"
+                columns={columns}
+                records={records}
+                noRecordsText="No categories found"
+                mih={records.length > 0 ? "auto" : 400}
+            />
+            <Pagination total={totalPages} path="/dashboard/products" />
+        </Stack>
     );
 }
 

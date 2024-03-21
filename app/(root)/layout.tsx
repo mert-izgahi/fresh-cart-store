@@ -4,9 +4,8 @@ import RootSearchForm from "@/components/forms/RootSearchForm";
 import Logo from "@/components/shared/Logo";
 import { useGetAccountQuery } from "@/redux/account/api";
 import { setAccount, setIsAuthenticated } from "@/redux/account/slice";
-import { useGetCategoriesQuery } from "@/redux/categories/api";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { SignOutButton, SignedIn, useClerk } from "@clerk/nextjs";
+import { SignedIn, useClerk } from "@clerk/nextjs";
 import {
     ActionIcon,
     AppShell,

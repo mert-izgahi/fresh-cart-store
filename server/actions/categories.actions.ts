@@ -2,10 +2,15 @@ import { connectDb } from "../utils/connectDb";
 import Category, { ICategory } from "../models/Category.model";
 import { QueryType } from "@/types";
 
-export const getAllCategories = async (queryObj: QueryType) => {
+export const getAllCategories = async (queryObj: QueryType, page: number) => {
     await connectDb();
-    const categories = await Category.find(queryObj);
-    return categories;
+    const limit = 1;
+    const skip = page > 1 ? (page - 1) * limit : 0;
+    const categories = await Category.find(queryObj).limit(limit).skip(skip);
+    const totalPages = Math.ceil(
+        (await Category.countDocuments(queryObj)) / limit
+    );
+    return { categories, totalPages };
 };
 
 export const createCategory = async (category: ICategory) => {

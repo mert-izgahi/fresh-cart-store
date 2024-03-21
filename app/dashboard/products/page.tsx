@@ -1,5 +1,6 @@
 import DashboardSearchForm from "@/components/forms/DashboardSearchForm";
 import PageHeader from "@/components/shared/PageHeader";
+import Pagination from "@/components/shared/Pagination";
 import ProductsTable from "@/components/tables/ProductsTable";
 import { Container, Stack } from "@mantine/core";
 import React from "react";

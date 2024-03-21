@@ -7,9 +7,15 @@ import { generateQueryObj } from "@/server/utils/generateQuery";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = asyncWrapper(async (req: NextRequest) => {
-    const queryObj = await generateQueryObj(req);
-    const products = await getAllProducts(queryObj);
-    return NextResponse.json(products, { status: 200 });
+    const { queryObj, page } = await generateQueryObj(req);
+    const { products, totalPages } = await getAllProducts(
+        queryObj,
+        Number(page)
+    );
+    return NextResponse.json(
+        { records: products, totalPages },
+        { status: 200 }
+    );
 });
 
 export const POST = asyncWrapper(async (req: NextRequest) => {
