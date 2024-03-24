@@ -1,18 +1,11 @@
 import { useGetCategoriesQuery } from "@/redux/categories/api";
-import {
-    Button,
-    Flex,
-    Image,
-    Menu,
-    Text,
-    TextInput,
-    UnstyledButton,
-} from "@mantine/core";
+import { Button, Flex, Image, Menu, TextInput } from "@mantine/core";
 import React from "react";
 import { IoSearch } from "react-icons/io5";
 
 function RootSearchForm() {
-    const { data: categories, isLoading } = useGetCategoriesQuery({});
+    const { data, isLoading } = useGetCategoriesQuery({});
+    const records = data?.records;
     return (
         <Flex align="center" justify="center" gap="md" flex={1}>
             <TextInput
@@ -31,7 +24,7 @@ function RootSearchForm() {
                     <Button variant="subtle">Categories</Button>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    {categories?.map((category: any) => (
+                    {records?.map((category: any) => (
                         <Menu.Item
                             leftSection={
                                 <Image
