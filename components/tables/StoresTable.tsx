@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
 import { useDeleteStoreMutation, useGetStoresQuery } from "@/redux/stores/api";
 import { IStore } from "@/server/models/Store.model";
+import Pagination from "../shared/Pagination";
 
 function StoreProductsButton({ storeId }: { storeId: string }) {
     const router = useRouter();
@@ -143,17 +144,21 @@ function StoresTable() {
     }
 
     return (
-        <DataTable
-            borderRadius="sm"
-            withTableBorder
-            highlightOnHover
-            verticalSpacing="md"
-            shadow="none"
-            columns={columns}
-            records={data}
-            noRecordsText="No categories found"
-            mih={data.length > 0 ? "auto" : 400}
-        />
+        <>
+            <DataTable
+                borderRadius="sm"
+                withTableBorder
+                highlightOnHover
+                verticalSpacing="md"
+                shadow="none"
+                columns={columns}
+                records={data.records}
+                noRecordsText="No categories found"
+                mih={data.records.length > 0 ? "auto" : 400}
+            />
+
+            <Pagination total={data.totalPages} />
+        </>
     );
 }
 

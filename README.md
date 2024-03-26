@@ -1,16 +1,11 @@
-# Setup Project Environment
+## Home Page
 
--   Next.js
--   Mongodb
--   Typescript
--   Uploadthing
--   Mantine
--   Redux Toolkit
+![Alt Text](./screenshots/home.png)
 
-# Start with dashboard
+## Authentication
 
--   Build layout UI for dashboard using Mantine
--   Build Mongoose Models
--   Build REST API
--   Categories Page
--   Create Category Page
+![Alt Text](./screenshots/auth.png)
+
+## Stores
+
+![Alt Text](./screenshots/stores.png)

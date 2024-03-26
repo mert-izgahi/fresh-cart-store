@@ -4,7 +4,9 @@ import { QueryType } from "@/types";
 
 export const getAllProducts = async (queryObj: QueryType, page: number) => {
     await connectDb();
-    const limit = 1;
+    const limit = process.env.NEXT_PUBLIC_PAGINATION_LIMIT
+        ? parseInt(process.env.NEXT_PUBLIC_PAGINATION_LIMIT)
+        : 10;
     const skip = page > 1 ? (page - 1) * limit : 0;
     const products = await Product.find(queryObj).limit(limit).skip(skip);
     const totalPages = Math.ceil(

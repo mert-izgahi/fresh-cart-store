@@ -72,7 +72,7 @@ function ProductForm({ mode, productId }: Props) {
     }, [categories]);
 
     const storesOptions = useMemo(() => {
-        return stores?.map((store: IProduct) => {
+        return stores.records?.map((store: IProduct) => {
             return {
                 value: store._id,
                 label: store.name,

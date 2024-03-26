@@ -2,10 +2,21 @@ import Order from "../models/Order.model";
 import { connectDb } from "../utils/connectDb";
 import { QueryType } from "@/types";
 
-export const getAllOrders = async (queryObj: QueryType) => {
+export const getAllOrders = async (queryObj: QueryType, page: number) => {
     await connectDb();
-    const orders = await Order.find(queryObj);
-    return orders;
+
+    const limit = process.env.NEXT_PUBLIC_PAGINATION_LIMIT
+        ? parseInt(process.env.NEXT_PUBLIC_PAGINATION_LIMIT)
+        : 10;
+
+    const skip = page > 1 ? (page - 1) * limit : 0;
+
+    const orders = await Order.find(queryObj).limit(limit).skip(skip);
+
+    const totalPages = Math.ceil(
+        (await Order.countDocuments(queryObj)) / limit
+    );
+    return { orders, totalPages };
 };
 
 export const getOrder = async (id: string) => {

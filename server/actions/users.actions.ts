@@ -3,6 +3,7 @@ import { connectDb } from "../utils/connectDb";
 
 export const getAllUsers = async () => {
     await connectDb();
+
     const users = await User.find();
     return users;
 };

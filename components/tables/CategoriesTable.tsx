@@ -26,6 +26,7 @@ import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
+import Pagination from "../shared/Pagination";
 
 function EditCategoryButton({ categoryId }: { categoryId: string }) {
     const router = useRouter();
@@ -154,17 +155,20 @@ function CategoriesTable() {
     }
 
     return (
-        <DataTable
-            borderRadius="sm"
-            withTableBorder
-            highlightOnHover
-            verticalSpacing="md"
-            shadow="none"
-            columns={columns}
-            records={data}
-            noRecordsText="No categories found"
-            mih={data.length > 0 ? "auto" : 400}
-        />
+        <>
+            <DataTable
+                borderRadius="sm"
+                withTableBorder
+                highlightOnHover
+                verticalSpacing="md"
+                shadow="none"
+                columns={columns}
+                records={data.records}
+                noRecordsText="No categories found"
+                mih={data.records.length > 0 ? "auto" : 400}
+            />
+            <Pagination total={data.totalPages} />
+        </>
     );
 }
 
